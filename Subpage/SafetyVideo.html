@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频学习</title>
+    <meta property="og:title" content="安全知识视频学习 - GYLab安全教育">
+    <meta property="og:locale" content="zh_CN">
+    <!-- <link rel="canonical" href="https://gylab.github.io/SafetyVideo.html">
+    <meta property="og:url" content="https://gylab.github.io/SafetyVideo.html"> -->
+    <meta property="og:site_name" content="gylab.github.io">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&family=Raleway:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --outline-bg-color: #f8f9fa;
+            --outline-text-color: #2c3e50;
+            --outline-primary-color: #2c3e50;
+            --outline-text-color-light: #7f8c8d;
+        }
+
+        html,
+        body {
+            background-color: #fdfdfd;
+            font-size: calc(1728vw / 1728);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 添加动画关键帧 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 页面标题样式 */
+        .page-title {
+            font-family: 'Raleway', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #030303;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid rgba(3, 3, 3, 0.1);
+        }
+
+        /* 卡片容器 */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* 卡片样式 */
+        .safety-card {
+            width: 300px;
+            height: 350px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .safety-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #030303;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(3, 3, 3, 0.7);
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #030303;
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            color: #030303;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #4a4a4a;
+        }
+
+        /* 页面内容容器 */
+        .content-container {
+            max-width: 1400px;
+            /* 增加容器宽度，从1200px改为1400px */
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* 卡片样式 */
+        .safety-card {
+            width: 300px;
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* 卡片容器 */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            /* 减小卡片间距，从2rem改为1.5rem */
+            justify-content: flex-start;
+            margin-top: 2rem;
+        }
+
+        /* 动画类 */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        .slide-in {
+            opacity: 0;
+            animation: slideInUp 0.5s ease-out forwards;
+        }
+
+        .slide-in-delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .slide-in-delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .slide-in-delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .slide-in-delay-4 {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">GYLab安全教育</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="content-container">
+        <h1 class="page-title fade-in">安全知识视频学习</h1>
+
+
+        <!-- 安全防护装备部分 -->
+        <div class="section-container fade-in" style="margin-bottom: 3rem;">
+            <h2 class="section-title slide-in"
+                style="font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 600; color: #030303; margin-bottom: 1.5rem; padding-left: 0.5rem; border-left: 4px solid #030303;">
+                1. 安全防护装备</h2>
+
+            <div class="card-container" style="justify-content: flex-start;">
+                <div class="safety-card slide-in slide-in-delay-2" style="height: 250px;">
+                    <img src="images/safety-equipment-1.jpg" alt="实验室防护服使用" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">实验室防护服使用</h3>
+                        <p class="card-description">正确穿戴实验室防护服的方法</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-2" style="height: 250px;">
+                    <img src="images/safety-equipment-2.jpg" alt="呼吸防护装备" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">呼吸防护装备</h3>
+                        <p class="card-description">各类呼吸防护装备的使用指南</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-2" style="height: 250px;">
+                    <img src="images/safety-equipment-3.jpg" alt="眼部防护装备" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">眼部防护装备</h3>
+                        <p class="card-description">护目镜和面罩的正确使用方法</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 消防安全部分 -->
+        <div class="section-container fade-in" style="margin-bottom: 3rem;">
+            <h2 class="section-title slide-in"
+                style="font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 600; color: #030303; margin-bottom: 1.5rem; padding-left: 0.5rem; border-left: 4px solid #030303;">
+                2. 消防安全</h2>
+
+            <div class="card-container" style="justify-content: flex-start;">
+                <div class="safety-card slide-in slide-in-delay-3" style="height: 250px;">
+                    <img src="images/fire-safety-1.jpg" alt="灭火器使用" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">灭火器使用</h3>
+                        <p class="card-description">不同类型灭火器的正确使用方法</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-3" style="height: 250px;">
+                    <img src="images/fire-safety-2.jpg" alt="火灾逃生" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">火灾逃生</h3>
+                        <p class="card-description">实验室火灾中的安全逃生路线</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-3" style="height: 250px;">
+                    <img src="images/fire-safety-3.jpg" alt="消防设备维护" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">消防设备维护</h3>
+                        <p class="card-description">实验室消防设备的日常检查与维护</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 化学品安全部分 -->
+        <div class="section-container fade-in" style="margin-bottom: 3rem;">
+            <h2 class="section-title slide-in"
+                style="font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 600; color: #030303; margin-bottom: 1.5rem; padding-left: 0.5rem; border-left: 4px solid #030303;">
+                3. 化学品安全</h2>
+
+            <div class="card-container" style="justify-content: flex-start;">
+                <div class="safety-card slide-in slide-in-delay-1" style="height: 250px;">
+                    <img src="images/chemical-safety-1.jpg" alt="化学品存储规范" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">化学品存储规范</h3>
+                        <p class="card-description">了解不同类型化学品的正确存储方法</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-1" style="height: 250px;">
+                    <img src="images/chemical-safety-2.jpg" alt="危险化学品处理" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">危险化学品处理</h3>
+                        <p class="card-description">学习危险化学品的安全处理流程</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-1" style="height: 250px;">
+                    <img src="images/chemical-safety-3.jpg" alt="化学品泄漏应急" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">化学品泄漏应急</h3>
+                        <p class="card-description">掌握化学品泄漏的应急处理方法</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-1" style="height: 250px;">
+                    <img src="images/chemical-safety-4.jpg" alt="化学品标签识别" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">化学品标签识别</h3>
+                        <p class="card-description">正确识别和理解化学品安全标签</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 水电安全部分 -->
+        <div class="section-container fade-in" style="margin-bottom: 3rem;">
+            <h2 class="section-title slide-in"
+                style="font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 600; color: #030303; margin-bottom: 1.5rem; padding-left: 0.5rem; border-left: 4px solid #030303;">
+                4. 水电安全</h2>
+
+            <div class="card-container" style="justify-content: flex-start;">
+                <div class="safety-card slide-in slide-in-delay-4" style="height: 250px;">
+                    <img src="images/electrical-safety-1.jpg" alt="电气设备使用" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">电气设备使用</h3>
+                        <p class="card-description">实验室电气设备的安全操作规程</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-4" style="height: 250px;">
+                    <img src="images/electrical-safety-2.jpg" alt="漏电防护" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">漏电防护</h3>
+                        <p class="card-description">实验室漏电的预防与应急处理</p>
+                    </div>
+                </div>
+
+                <div class="safety-card slide-in slide-in-delay-4" style="height: 250px;">
+                    <img src="images/electrical-safety-3.jpg" alt="水管道安全" class="card-img" style="height: 150px;">
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.2rem;">水管道安全</h3>
+                        <p class="card-description">实验室水管道的安全使用与维护</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 页脚 -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0"
+                style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: rgba(3, 3, 3, 0.6);">
+                © 2023 GYLab安全教育平台 | 更新时间: 2025-05-14
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>
