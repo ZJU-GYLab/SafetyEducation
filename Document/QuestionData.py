@@ -10,22 +10,30 @@ def parse_choice_questions(file_path):
         content = f.read()
     
     # 使用正则表达式匹配选择题
-    pattern = r'(\d+)\.\.?\s+(.*?)\s+A[、.](.*?)\s+B[、.](.*?)\s+C[、.](.*?)\s+D[、.]?(.*?)(?=\n\d+\.\.|\n\s*$|$)'
+    pattern = r'(\d+)\.\.?\s+(.*?)\s+A\.\s+(.*?)\s+B\.\s+(.*?)(?:\s+C\.\s+(.*?))?(?:\s+D\.\s+(.*?))?(?:\s+E\.\s+(.*?))?(?:\s+F\.\s+(.*?))?(?=\s+正确答案：|\n\d+\.\.?|\s*$)'
     matches = re.findall(pattern, content, re.DOTALL)
     
     for i, match in enumerate(matches):
-        question_id = f"q{int(match[0]):03d}"
+        question_id = f"qx{i+1:03d}"  # 使用qx前缀和序号
         question_text = match[1].strip()
-        options = {
-            "A": match[2].strip(),
-            "B": match[3].strip(),
-            "C": match[4].strip(),
-            "D": match[5].strip() if match[5].strip() else "无"
-        }
         
-        # 这里需要设置默认答案，实际应用中可能需要从其他地方获取
-        # 由于题库中没有提供答案，这里暂时设置为A
-        answer = "A"
+        # 构建选项字典
+        options = {"A": match[2].strip()}
+        if match[3].strip():
+            options["B"] = match[3].strip()
+        if len(match) > 4 and match[4].strip():
+            options["C"] = match[4].strip()
+        if len(match) > 5 and match[5].strip():
+            options["D"] = match[5].strip()
+        if len(match) > 6 and match[6].strip():
+            options["E"] = match[6].strip()
+        if len(match) > 7 and match[7].strip():
+            options["F"] = match[7].strip()
+        
+        # 查找答案
+        answer_pattern = rf'{match[0]}\.\.?\s+.*?正确答案：([A-F])'
+        answer_match = re.search(answer_pattern, content, re.DOTALL)
+        answer = answer_match.group(1) if answer_match else "A"  # 默认答案为A
         
         question_data = {
             "id": question_id,
@@ -47,16 +55,13 @@ def parse_true_false_questions(file_path):
         content = f.read()
     
     # 使用正则表达式匹配判断题
-    pattern = r'(\d+)\.\s+(.*?)(?=\n\d+\.|\n\s*$|$)'
+    pattern = r'(\d+)\.\.?\s+(.*?)\s+正确答案：(对|错)'
     matches = re.findall(pattern, content, re.DOTALL)
     
     for i, match in enumerate(matches):
-        question_id = f"q{int(match[0])+1000:03d}"  # 使用1000+序号避免与选择题ID冲突
+        question_id = f"qp{i+1:03d}"  # 使用qp前缀和序号
         question_text = match[1].strip()
-        
-        # 这里需要设置默认答案，实际应用中可能需要从其他地方获取
-        # 由于题库中没有提供答案，这里暂时随机设置为true
-        answer = True
+        answer = True if match[2] == "对" else False
         
         question_data = {
             "id": question_id,
@@ -71,9 +76,9 @@ def parse_true_false_questions(file_path):
 
 def main():
     # 设置文件路径
-    choice_file = os.path.join(os.path.dirname(__file__), "..", "Document", "选择题.txt")
-    true_false_file = os.path.join(os.path.dirname(__file__), "..", "Document", "判断题.txt")
-    output_file = os.path.join(os.path.dirname(__file__), "..", "Document", "questions.json")
+    choice_file = "/Users/chenhaotian/GYLab_SafetyEducation/Document/选择题带答案.txt"
+    true_false_file = "/Users/chenhaotian/GYLab_SafetyEducation/Document/判断题带答案.txt"
+    output_file = "/Users/chenhaotian/GYLab_SafetyEducation/Document/QuestionLibrary.json"
     
     # 解析题目
     choice_questions = parse_choice_questions(choice_file)
