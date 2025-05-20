@@ -263,6 +263,161 @@
             margin-bottom: 1rem;
             display: none;
         }
+        
+        /* 试卷容器样式 */
+        .exam-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            display: none;
+        }
+        
+        .exam-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(3, 3, 3, 0.1);
+            padding-bottom: 1rem;
+        }
+        
+        .exam-info {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #030303;
+        }
+        
+        /* 题目容器样式 */
+        .question-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* 题目文本样式 */
+        .question-text {
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 1rem;  /* 从1.2rem减小到1.1rem */
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        
+        /* 选项容器样式 */
+        .options-container {
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+        
+        /* 选项项样式 */
+        .option-item {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* 选项文本样式 */
+        .option-text {
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 1rem;  /* 从1.1rem增大到1.25rem */
+            margin-left: 0.8rem;
+            color: #444;
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+        }
+        
+        /* 选项输入样式 */
+        .option-input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* 提交按钮样式 */
+        .submit-exam-btn {
+            background-color: #030303;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 2rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .submit-exam-btn:hover {
+            background-color: #1a1a1a;
+            transform: translateY(-3px);
+        }
+        
+        .submit-exam-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* 警告信息样式 */
+        .warning-message {
+            color: #e74c3c;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+                /* 结果弹窗样式 */
+                .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .result-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .close-result-btn {
+            background-color: #030303;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 1.5rem;
+        }
+        
+        .close-result-btn:hover {
+            background-color: #1a1a1a;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 
@@ -281,15 +436,28 @@
     <!-- 主要内容 -->
     <div class="content-container">
         <h1 class="page-title fade-in">安全知识答题练习</h1>
-        
+
         <!-- 用户信息表单 -->
-        <div class="user-form">
+        <div class="user-form" id="userForm">
             <h2 class="form-title">请输入您的姓名开始答题</h2>
             <input type="text" id="userName" class="form-input" placeholder="请输入您的姓名">
             <p id="errorMessage" class="error-message">请输入您的姓名后再开始答题</p>
             <button id="startBtn" class="start-btn">开始答题</button>
         </div>
-        
+
+        <!-- 试卷容器 -->
+        <div class="exam-container" id="examContainer">
+            <div class="exam-header">
+                <p class="exam-info" id="examInfo">考生：<span id="studentName"></span> | 题目数量：4题（2道选择题和2道判断题）</p>
+            </div>
+
+            <div id="questionsContainer">
+                <!-- 题目将通过JavaScript动态生成 -->
+            </div>
+
+            <p id="warningMessage" class="warning-message">您还有未完成的题目，请检查后再提交！</p>
+            <button id="submitExamBtn" class="submit-exam-btn">提交答案</button>
+        </div>
     </div>
 
     <!-- 页脚 -->
@@ -304,34 +472,423 @@
 
     <!-- 添加JavaScript -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const userNameInput = document.getElementById('userName');
             const startBtn = document.getElementById('startBtn');
             const errorMessage = document.getElementById('errorMessage');
-            
-            startBtn.addEventListener('click', function() {
+            const userForm = document.getElementById('userForm');
+            const examContainer = document.getElementById('examContainer');
+            const studentName = document.getElementById('studentName');
+            const questionsContainer = document.getElementById('questionsContainer');
+            const submitExamBtn = document.getElementById('submitExamBtn');
+            const warningMessage = document.getElementById('warningMessage');
+
+            // 开始答题按钮点击事件
+            // 开始答题按钮点击事件
+            startBtn.addEventListener('click', function () {
                 const userName = userNameInput.value.trim();
-                
+
                 if (userName === '') {
                     // 显示错误信息
                     errorMessage.style.display = 'block';
                 } else {
                     // 存储用户名
                     localStorage.setItem('practiceUserName', userName);
+
+                    // 隐藏用户表单，显示试卷
+                    userForm.style.display = 'none';
+                    examContainer.style.display = 'block';
+
+                    // 设置考生姓名
+                    studentName.textContent = userName;
+
+                    // 加载题库并生成试卷
+                    loadQuestions();
+                }
+            });
+
+            // 当用户开始输入时隐藏错误信息
+            userNameInput.addEventListener('input', function () {
+                errorMessage.style.display = 'none';
+            });
+
+            // 加载题库并生成试卷
+            function loadQuestions() {
+                fetch('../Document/QuestionLibrary.json')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('题库加载失败');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 随机选择25道选择题和25道判断题，共50道题目
+                        const selectedQuestions = getRandomQuestions(data);
+
+                        // 生成试卷
+                        generateExam(selectedQuestions);
+                    })
+                    .catch(error => {
+                        console.error('加载题库出错:', error);
+                        alert('题库加载失败，请刷新页面重试');
+                    });
+            }
+
+            // 从题库中按题型随机选择指定数量的题目
+            function getRandomQuestions(questions) {
+                // 将题目按类型分组
+                const choiceQuestions = questions.filter(q => q.type === 'choice');
+                const judgmentQuestions = questions.filter(q => q.type === 'true_false');
+
+                // 随机排序
+                const shuffledChoice = [...choiceQuestions].sort(() => 0.5 - Math.random());
+                const shuffledJudgment = [...judgmentQuestions].sort(() => 0.5 - Math.random());
+
+                // 选择25道选择题和25道判断题
+                const selectedChoice = shuffledChoice.slice(0, 2);
+                const selectedJudgment = shuffledJudgment.slice(0, 2);
+
+                // 合并并返回所有选中的题目
+                return [...selectedChoice, ...selectedJudgment];
+            }
+
+            // 生成试卷
+            function generateExam(questions) {
+                questionsContainer.innerHTML = '';
+                // 保存题目数据供后续使用
+                window.examQuestions = questions;
+
+                questions.forEach((question, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-container';
+                    questionDiv.dataset.questionId = index;
+                    // 存储正确答案
+                    questionDiv.dataset.correctAnswer = question.answer;
+
+                    // 题目文本
+                    const questionText = document.createElement('p');
+                    questionText.className = 'question-text';
+                    questionText.textContent = `${index + 1}. ${question.question}`;
+                    questionDiv.appendChild(questionText);
+
+                    // 选项容器
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.className = 'options-container';
+
+                    // 根据题目类型生成不同的选项
+                    if (question.type === 'choice') {
+                        // 选择题 - 处理对象格式的选项
+                        Object.entries(question.options).forEach(([key, value]) => {
+                            const optionItem = createOptionItem(`${key}. ${value}`, index, key, 'radio');
+                            optionsContainer.appendChild(optionItem);
+                        });
+                    } else if (question.type === 'true_false') {
+                        // 判断题
+                        const options = [
+                            { label: '正确', value: 'true' },
+                            { label: '错误', value: 'false' }
+                        ];
+
+                        options.forEach((option, optionIndex) => {
+                            const optionItem = document.createElement('div');
+                            optionItem.className = 'option-item';
+
+                            const input = document.createElement('input');
+                            input.type = 'radio';
+                            input.name = `question-${index}`;
+                            input.id = `question-${index}-option-${optionIndex}`;
+                            input.value = option.value;
+                            input.className = 'option-input';
+
+                            const label = document.createElement('label');
+                            label.htmlFor = `question-${index}-option-${optionIndex}`;
+                            label.textContent = option.label;
+                            label.className = 'option-text';
+
+                            optionItem.appendChild(input);
+                            optionItem.appendChild(label);
+                            optionsContainer.appendChild(optionItem);
+                        });
+                    }
+
+                    questionDiv.appendChild(optionsContainer);
+                    questionsContainer.appendChild(questionDiv);
+                });
+            }
+
+            // 创建选项项
+            function createOptionItem(optionText, questionIndex, optionIndex, type) {
+                const optionItem = document.createElement('div');
+                optionItem.className = 'option-item';
+
+                const optionInput = document.createElement('input');
+                optionInput.type = type;
+                optionInput.className = 'option-input';
+                optionInput.name = `question-${questionIndex}`;
+                optionInput.id = `question-${questionIndex}-option-${optionIndex}`;
+                optionInput.value = optionIndex;
+
+                const optionLabel = document.createElement('label');
+                optionLabel.className = 'option-text';
+                optionLabel.htmlFor = `question-${questionIndex}-option-${optionIndex}`;
+                optionLabel.textContent = optionText;
+
+                optionItem.appendChild(optionInput);
+                optionItem.appendChild(optionLabel);
+
+                return optionItem;
+            }
+
+            // 提交试卷按钮点击事件
+            submitExamBtn.addEventListener('click', function () {
+                // 检查是否所有题目都已回答
+                const allQuestions = document.querySelectorAll('.question-container');
+                let allAnswered = true;
+                let unansweredQuestions = [];
+
+                allQuestions.forEach((question, index) => {
+                    const questionId = question.dataset.questionId;
+                    const answered = document.querySelector(`input[name="question-${questionId}"]:checked`);
                     
-                    // 这里可以添加跳转到答题页面的逻辑
-                    // 例如：window.location.href = 'questions.html';
+                    if (!answered) {
+                        allAnswered = false;
+                        unansweredQuestions.push(parseInt(questionId) + 1);
+                        question.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+                    } else {
+                        question.style.backgroundColor = '#f9f9f9';
+                    }
+                });
+
+                if (!allAnswered) {
+                    // 显示警告信息
+                    warningMessage.style.display = 'block';
+                    warningMessage.textContent = `您还有未完成的题目（题号：${unansweredQuestions.join('、')}），请检查后再提交！`;
+                    return;
+                }
+
+                // 隐藏警告信息
+                warningMessage.style.display = 'none';
+                
+                // 计算得分
+                let score = 0;
+                let totalQuestions = allQuestions.length;
+                
+                allQuestions.forEach((question, index) => {
+                    const selectedInput = question.querySelector('input:checked');
+                    const correctAnswer = window.examQuestions[index].answer;
                     
-                    // 或者显示答题界面，隐藏当前表单
-                    alert('欢迎 ' + userName + '！准备开始答题。');
-                    // 这里可以添加显示答题界面的代码
+                    // 根据题目类型比较答案
+                    if (window.examQuestions[index].type === 'true_false') {
+                        // 判断题答案需要转换为布尔值进行比较
+                        if (selectedInput.value === correctAnswer.toString()) {
+                            score++;
+                            question.style.backgroundColor = '#e8f5e9';
+                        } else {
+                            question.style.backgroundColor = '#ffebee';
+                        }
+                    } else {
+                        // 选择题直接比较字符串
+                        if (selectedInput.value === correctAnswer) {
+                            score++;
+                            question.style.backgroundColor = '#e8f5e9';
+                        } else {
+                            question.style.backgroundColor = '#ffebee';
+                        }
+                    }
+                });
+                
+                // 创建结果弹窗
+                const resultModal = document.createElement('div');
+                resultModal.className = 'result-modal';
+                resultModal.innerHTML = `
+                    <div class="result-content">
+                        <h2>答题结果</h2                        <p>考生：${studentName.textContent}</p>
+                        <p>正确率：${Math.round((score/totalQuestions) * 100)}%</p>
+                        <button id="closeResultBtn" class="close-result-btn">关闭</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(resultModal);
+                
+                // 关闭结果弹窗按钮事件
+                document.getElementById('closeResultBtn').addEventListener('click', function() {
+                    resultModal.remove();
+                });
+            });
+            
+            // 计算得分并显示结果
+            function calculateAndShowResult() {
+                const allQuestions = document.querySelectorAll('.question-container');
+                let correctCount = 0;
+                let totalQuestions = allQuestions.length;
+                let incorrectQuestions = [];
+                
+                // 获取所有问题的答案
+                allQuestions.forEach((question, index) => {
+                    const questionId = question.dataset.questionId;
+                    const selectedAnswer = document.querySelector(`input[name="question-${questionId}"]:checked`).value;
+                    const correctAnswer = getCorrectAnswer(index);
+                    
+                    if (selectedAnswer === correctAnswer) {
+                        correctCount++;
+                    } else {
+                        incorrectQuestions.push(questionId);
+                        
+                        // 标记错误的题目
+                        question.classList.add('incorrect-answer');
+                        
+                        // 添加正确答案提示（初始为隐藏状态）
+                        const correctAnswerText = document.createElement('p');
+                        correctAnswerText.className = 'correct-answer-text';
+                        correctAnswerText.textContent = `正确答案：${formatCorrectAnswer(correctAnswer, index)}`;
+                        question.appendChild(correctAnswerText);
+                    }
+                });
+                
+                // 计算正确率
+                const score = Math.round((correctCount / totalQuestions) * 100);
+                
+                // 显示结果弹窗
+                const resultModal = document.getElementById('resultModal');
+                const resultScore = document.getElementById('resultScore');
+                const resultMessage = document.getElementById('resultMessage');
+                
+                resultScore.textContent = `${score}%`;
+                
+                // 根据分数设置不同的颜色和消息
+                if (score >= 90) {
+                    resultScore.style.color = '#2ecc71';
+                    resultMessage.textContent = '太棒了！您对安全知识掌握得非常好！';
+                } else if (score >= 70) {
+                    resultScore.style.color = '#3498db';
+                    resultMessage.textContent = '做得不错！您对安全知识有较好的理解。';
+                } else if (score >= 60) {
+                    resultScore.style.color = '#f39c12';
+                    resultMessage.textContent = '及格了！但还需要加强安全知识学习。';
+                } else {
+                    resultScore.style.color = '#e74c3c';
+                    resultMessage.textContent = '需要加强学习！请认真复习安全知识。';
+                }
+                
+                // 显示结果弹窗
+                resultModal.style.display = 'flex';
+                
+                // 存储错误题目的ID，用于回看
+                localStorage.setItem('incorrectQuestions', JSON.stringify(incorrectQuestions));
+            }
+            
+            // 获取正确答案
+            function getCorrectAnswer(questionIndex) {
+                // 这里应该根据题库中的正确答案返回
+                // 由于我们没有完整的题库数据，这里使用一个模拟函数
+                // 在实际应用中，应该从题库数据中获取正确答案
+                const question = window.examQuestions[questionIndex];
+                return question.answer;
+            }
+            
+            // 格式化正确答案显示
+            function formatCorrectAnswer(answer, questionIndex) {
+                const question = window.examQuestions[questionIndex];
+                
+                if (question.type === 'choice') {
+                    // 选择题，显示选项文本
+                    return `${answer}. ${question.options[answer]}`;
+                } else if (question.type === 'true_false') {
+                    // 判断题，显示"正确"或"错误"
+                    return answer === 'true' ? '正确' : '错误';
+                }
+                
+                return answer;
+            }
+            
+            // 回看错题按钮点击事件
+            document.getElementById('reviewBtn').addEventListener('click', function() {
+                // 隐藏结果弹窗
+                document.getElementById('resultModal').style.display = 'none';
+                
+                // 显示所有错题的正确答案
+                const correctAnswerTexts = document.querySelectorAll('.correct-answer-text');
+                correctAnswerTexts.forEach(text => {
+                    text.style.display = 'block';
+                });
+                
+                // 滚动到第一个错题
+                const firstIncorrectQuestion = document.querySelector('.incorrect-answer');
+                if (firstIncorrectQuestion) {
+                    firstIncorrectQuestion.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
             
-            // 当用户开始输入时隐藏错误信息
-            userNameInput.addEventListener('input', function() {
-                errorMessage.style.display = 'none';
+            // 关闭结果弹窗按钮点击事件
+            document.getElementById('closeBtn').addEventListener('click', function() {
+                document.getElementById('resultModal').style.display = 'none';
             });
+            
+            // 存储生成的试卷题目，用于后续获取正确答案
+            window.examQuestions = [];
+            
+            // 修改generateExam函数，存储题目数据
+            function generateExam(questions) {
+                questionsContainer.innerHTML = '';
+                
+                // 存储题目数据
+                window.examQuestions = questions;
+                
+                questions.forEach((question, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-container';
+                    questionDiv.dataset.questionId = index;
+
+                    // 题目文本
+                    const questionText = document.createElement('p');
+                    questionText.className = 'question-text';
+                    questionText.textContent = `${index + 1}. ${question.question}`;
+                    questionDiv.appendChild(questionText);
+
+                    // 选项容器
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.className = 'options-container';
+
+                    // 根据题目类型生成不同的选项
+                    if (question.type === 'choice') {
+                        // 选择题 - 处理对象格式的选项
+                        Object.entries(question.options).forEach(([key, value]) => {
+                            const optionItem = createOptionItem(`${key}. ${value}`, index, key, 'radio');
+                            optionsContainer.appendChild(optionItem);
+                        });
+                    } else if (question.type === 'true_false') {
+                        // 判断题
+                        const options = [
+                            { label: '正确', value: 'true' },
+                            { label: '错误', value: 'false' }
+                        ];
+
+                        options.forEach((option, optionIndex) => {
+                            const optionItem = document.createElement('div');
+                            optionItem.className = 'option-item';
+
+                            const input = document.createElement('input');
+                            input.type = 'radio';
+                            input.name = `question-${index}`;
+                            input.id = `question-${index}-option-${optionIndex}`;
+                            input.value = option.value;
+                            input.className = 'option-input';
+
+                            const label = document.createElement('label');
+                            label.htmlFor = `question-${index}-option-${optionIndex}`;
+                            label.textContent = option.label;
+                            label.className = 'option-text';
+
+                            optionItem.appendChild(input);
+                            optionItem.appendChild(label);
+                            optionsContainer.appendChild(optionItem);
+                        });
+                    }
+
+                    questionDiv.appendChild(optionsContainer);
+                    questionsContainer.appendChild(questionDiv);
+                });
+            }
         });
     </script>
 </body>
