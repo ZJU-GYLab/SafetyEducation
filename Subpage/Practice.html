@@ -448,7 +448,7 @@
         <!-- 试卷容器 -->
         <div class="exam-container" id="examContainer">
             <div class="exam-header">
-                <p class="exam-info" id="examInfo">考生：<span id="studentName"></span> | 题目数量：4题（2道选择题和2道判断题）</p>
+                <p class="exam-info" id="examInfo">考生：<span id="studentName"></span> | 题目数量：100题（50道选择题和50道判断题）</p>
             </div>
 
             <div id="questionsContainer">
@@ -544,9 +544,9 @@
                 const shuffledChoice = [...choiceQuestions].sort(() => 0.5 - Math.random());
                 const shuffledJudgment = [...judgmentQuestions].sort(() => 0.5 - Math.random());
 
-                // 选择25道选择题和25道判断题
-                const selectedChoice = shuffledChoice.slice(0, 2);
-                const selectedJudgment = shuffledJudgment.slice(0, 2);
+                // 选择50道选择题和50道判断题
+                const selectedChoice = shuffledChoice.slice(0, 50);
+                const selectedJudgment = shuffledJudgment.slice(0, 50);
 
                 // 合并并返回所有选中的题目
                 return [...selectedChoice, ...selectedJudgment];
