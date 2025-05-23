@@ -231,10 +231,20 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-        </div>
+    </div>
     </nav>
-
+    
+    <!-- 视频进度显示区域 -->
+    <div class="progress-container">
+        <div class="container">
+            <h3 class="progress-title">学习进度</h3>
+            <div class="progress">
+                <div id="videoProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
+            <p class="progress-text">已完成 <span id="completedVideos">0</span> / <span id="totalVideos">0</span> 个视频</p>
+        </div>
+    </div>
+    
     <!-- 主要内容 -->
     <div class="content-container">
         <h1 class="page-title fade-in">安全知识视频学习</h1>
@@ -611,6 +621,137 @@
             </p>
         </div>
     </footer>
+
+    <!-- 视频进度记录脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有视频元素
+            const videoCards = document.querySelectorAll('.safety-card');
+            const totalVideos = videoCards.length;
+            
+            // 更新总视频数量
+            document.getElementById('totalVideos').textContent = totalVideos;
+            
+            // 从localStorage获取已完成的视频
+            let completedVideos = JSON.parse(localStorage.getItem('completedVideos')) || {};
+            
+            // 更新进度条和已完成视频数量
+            updateProgressBar();
+            
+            // 为每个视频卡片添加点击事件
+            videoCards.forEach(card => {
+                const videoLink = card.querySelector('a').getAttribute('href');
+                const videoId = videoLink.split('/').pop();
+                
+                // 如果视频已完成，添加完成标记
+                if (completedVideos[videoId]) {
+                    card.classList.add('video-completed');
+                }
+                
+                // 添加点击事件
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 创建模态对话框显示视频
+                    const modal = document.createElement('div');
+                    modal.className = 'video-modal';
+                    modal.innerHTML = `
+                        <div class="video-modal-content">
+                            <span class="close-modal">&times;</span>
+                            <video id="videoPlayer" controls autoplay style="width: 100%;">
+                                <source src="${videoLink}" type="video/mp4">
+                                您的浏览器不支持HTML5视频。
+                            </video>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    
+                    // 获取视频播放器
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    
+                    // 监听视频播放进度
+                    videoPlayer.addEventListener('timeupdate', function() {
+                        // 如果播放进度超过90%，标记为已完成
+                        if (videoPlayer.currentTime / videoPlayer.duration >= 0.9 && !completedVideos[videoId]) {
+                            completedVideos[videoId] = true;
+                            localStorage.setItem('completedVideos', JSON.stringify(completedVideos));
+                            
+                            // 更新UI
+                            card.classList.add('video-completed');
+                            updateProgressBar();
+                        }
+                    });
+                    
+                    // 关闭模态框
+                    const closeBtn = modal.querySelector('.close-modal');
+                    closeBtn.addEventListener('click', function() {
+                        modal.remove();
+                    });
+                    
+                    // 点击模态框外部关闭
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                });
+            });
+            
+            // 更新进度条函数
+            function updateProgressBar() {
+                const completedCount = Object.keys(completedVideos).length;
+                const progressPercentage = Math.round((completedCount / totalVideos) * 100);
+                
+                const progressBar = document.getElementById('videoProgressBar');
+                progressBar.style.width = progressPercentage + '%';
+                progressBar.textContent = progressPercentage + '%';
+                progressBar.setAttribute('aria-valuenow', progressPercentage);
+                
+                document.getElementById('completedVideos').textContent = completedCount;
+            }
+        });
+    </script>
+
+    <!-- 添加模态框样式 -->
+    <style>
+        .video-modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .close-modal:hover {
+            color: black;
+        }
+    </style>
 </body>
 
 </html>
@@ -661,5 +802,76 @@
 
     .slide-in-delay-4 {
         animation-delay: 0.4s;
+    }
+</style>
+
+<style>
+    :root {
+        --outline-bg-color: #f8f9fa;
+        --outline-text-color: #2c3e50;
+        --outline-primary-color: #2c3e50;
+        --outline-text-color-light: #7f8c8d;
+    }
+
+    /* 视频进度显示区域样式 */
+    .progress-container {
+        background-color: #f8f9fa;
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .progress-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #030303;
+        margin-bottom: 1rem;
+    }
+
+    .progress {
+        height: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: #e9ecef;
+        margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+        background-color: #28a745;
+        border-radius: 0.5rem;
+        transition: width 0.6s ease;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        color: white;
+        text-align: center;
+        line-height: 1.5rem;
+    }
+
+    .progress-text {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        color: rgba(3, 3, 3, 0.7);
+        text-align: right;
+    }
+
+    /* 已完成视频的标记样式 */
+    .video-completed {
+        position: relative;
+    }
+
+    .video-completed::after {
+        content: "✓";
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #28a745;
+        color: white;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
     }
 </style>
