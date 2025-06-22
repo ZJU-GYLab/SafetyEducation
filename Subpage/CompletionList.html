@@ -183,7 +183,20 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
-    </style>
+    
+        /* 添加链接样式 */
+        .person-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .person-item a:hover {
+            color: #007bff;
+        }
+</style>
 </head>
 
 <body>
@@ -200,20 +213,19 @@
 
     <!-- 主要内容 -->
     <div class="content-container">
-        <h1 class="page-title fade-in">完成安全教育名单</h1>
+        <h1 class="page-title fade-in">完成安全教育</h1>
 
         <!-- 视频学习完成名单 -->
         <div class="completion-list slide-in slide-in-delay-1">
-            <div class="person-list">
-                <!-- 这里可以根据实际情况添加人名 -->
-                <div class="person-item">张三</div>
-                <div class="person-item">李四</div>
-                <div class="person-item">王五</div>
-                <div class="person-item">赵六</div>
-                <div class="person-item">钱七</div>
-                <div class="person-item">孙八</div>
-                <div class="person-item">周九</div>
-                <div class="person-item">吴十</div>
+            <div class="person-list">                <!-- 这里可以根据实际情况添加人名 -->
+                <div class="person-item"><a href="../Image/CompleteEvidence/张三.jpg" target="_blank">张三</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/李四.jpg" target="_blank">李四</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/王五.jpg" target="_blank">王五</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/赵六.jpg" target="_blank">赵六</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/钱七.jpg" target="_blank">钱七</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/孙八.jpg" target="_blank">孙八</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/周九.jpg" target="_blank">周九</a></div>
+                <div class="person-item"><a href="../Image/CompleteEvidence/吴十.jpg" target="_blank">吴十</a></div>
                 <!-- 可以根据需要添加更多人名 -->
             </div>
         </div>
